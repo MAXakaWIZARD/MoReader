@@ -6,8 +6,8 @@ If you notice compliance oversights, please send a patch via pull request.
 
 ## Usage
 ```php
-    $parser = new MoReader\Reader();
-    $data = $reader->load('my-file.mo');
+$parser = new \MoReader\Reader();
+$data = $reader->load('my-file.mo'); //data is an array with entries
 ```
 
 ## License

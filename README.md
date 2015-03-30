@@ -1,4 +1,9 @@
 # MoReader
+[![Latest Stable Version](https://poser.pugx.org/maxakawizard/mo-reader/v/stable.svg)](https://packagist.org/packages/maxakawizard/mo-reader) 
+[![Total Downloads](https://poser.pugx.org/maxakawizard/mo-reader/downloads.svg)](https://packagist.org/packages/maxakawizard/mo-reader) 
+[![Latest Unstable Version](https://poser.pugx.org/maxakawizard/mo-reader/v/unstable.svg)](https://packagist.org/packages/maxakawizard/mo-reader) 
+[![License](https://poser.pugx.org/maxakawizard/mo-reader/license.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
+
 Gettext *.mo files reader for PHP.
 
 This package is compliant with [PSR-0](http://www.php-fig.org/psr/0/), [PSR-1](http://www.php-fig.org/psr/1/), and [PSR-2](http://www.php-fig.org/psr/2/).

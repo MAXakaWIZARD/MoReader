@@ -38,7 +38,7 @@ class Reader
             );
         }
 
-        $textDomain = [];
+        $textDomain = array();
 
         $this->file = fopen($filename, 'rb');
         if (false === $this->file) {
@@ -103,7 +103,7 @@ class Reader
             $translationStringSize   = $translationStringTable[$sizeKey];
             $translationStringOffset = $translationStringTable[$offsetKey];
 
-            $originalString = [''];
+            $originalString = array('');
             if ($originalStringSize > 0) {
                 fseek($this->file, $originalStringOffset);
                 $originalString = explode("\0", fread($this->file, $originalStringSize));

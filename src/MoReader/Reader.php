@@ -15,6 +15,11 @@ class Reader
     protected $file;
 
     /**
+     * @var string
+     */
+    protected $filename;
+
+    /**
      * Whether the current file is little endian.
      *
      * @var bool
@@ -38,6 +43,8 @@ class Reader
             );
         }
 
+        $this->filename = $filename;
+
         $textDomain = array();
 
         $this->file = fopen($filename, 'rb');
@@ -51,35 +58,8 @@ class Reader
             );
         }
 
-        // Verify magic number
-        $magic = fread($this->file, 4);
-
-        if ($magic == "\x95\x04\x12\xde") {
-            $this->littleEndian = false;
-        } elseif ($magic == "\xde\x12\x04\x95") {
-            $this->littleEndian = true;
-        } else {
-            fclose($this->file);
-            throw new \Exception(
-                sprintf(
-                    '%s is not a valid gettext file',
-                    $filename
-                )
-            );
-        }
-
-        // Verify major revision (only 0 and 1 supported)
-        $majorRevision = ($this->readInteger() >> 16);
-
-        if ($majorRevision !== 0 && $majorRevision !== 1) {
-            fclose($this->file);
-            throw new \Exception(
-                sprintf(
-                    '%s has an unknown major revision',
-                    $filename
-                )
-            );
-        }
+        $this->determineByteOrder();
+        $this->verifyMajorRevision();
 
         // Gather main information
         $numStrings                   = $this->readInteger();
@@ -130,6 +110,50 @@ class Reader
         fclose($this->file);
 
         return $textDomain;
+    }
+
+    /**
+     * Determines byte order
+     *
+     * @throws \Exception
+     */
+    protected function determineByteOrder()
+    {
+        $orderHeader = fread($this->file, 4);
+
+        if ($orderHeader == "\x95\x04\x12\xde") {
+            $this->littleEndian = false;
+        } elseif ($orderHeader == "\xde\x12\x04\x95") {
+            $this->littleEndian = true;
+        } else {
+            fclose($this->file);
+            throw new \Exception(
+                sprintf(
+                    '%s is not a valid gettext file',
+                    $this->filename
+                )
+            );
+        }
+    }
+
+    /**
+     * Verify major revision (only 0 and 1 supported)
+     *
+     * @throws \Exception
+     */
+    protected function verifyMajorRevision()
+    {
+        $majorRevision = ($this->readInteger() >> 16);
+
+        if ($majorRevision !== 0 && $majorRevision !== 1) {
+            fclose($this->file);
+            throw new \Exception(
+                sprintf(
+                    '%s has an unknown major revision',
+                    $this->filename
+                )
+            );
+        }
     }
 
     /**

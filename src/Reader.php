@@ -34,29 +34,9 @@ class Reader
      */
     public function load($filename)
     {
-        if (!is_file($filename) || !is_readable($filename)) {
-            throw new \Exception(
-                sprintf(
-                    'Could not open file %s for reading',
-                    $filename
-                )
-            );
-        }
+        $this->openFile($filename);
 
-        $this->filename = $filename;
-
-        $textDomain = array();
-
-        $this->file = fopen($filename, 'rb');
-        if (false === $this->file) {
-            throw new \Exception(
-                sprintf(
-                    'Could not open file %s for reading',
-                    $filename
-                ),
-                0
-            );
-        }
+        $data = array();
 
         $this->determineByteOrder();
         $this->verifyMajorRevision();
@@ -94,22 +74,54 @@ class Reader
                 $translationString = explode("\0", fread($this->file, $translationStringSize));
 
                 if (count($originalString) > 1 && count($translationString) > 1) {
-                    $textDomain[$originalString[0]] = $translationString;
+                    $data[$originalString[0]] = $translationString;
 
                     array_shift($originalString);
 
                     foreach ($originalString as $string) {
-                        $textDomain[$string] = '';
+                        $data[$string] = '';
                     }
                 } else {
-                    $textDomain[$originalString[0]] = $translationString[0];
+                    $data[$originalString[0]] = $translationString[0];
                 }
             }
         }
 
         fclose($this->file);
 
-        return $textDomain;
+        return $data;
+    }
+
+    /**
+     * Prepare file for reading
+     *
+     * @param $filename
+     *
+     * @throws \Exception
+     */
+    protected function openFile($filename)
+    {
+        $this->filename = $filename;
+
+        if (!is_file($this->filename) || !is_readable($this->filename)) {
+            throw new \Exception(
+                sprintf(
+                    'Could not open file %s for reading',
+                    $this->filename
+                )
+            );
+        }
+
+        $this->file = fopen($this->filename, 'rb');
+        if (false === $this->file) {
+            throw new \Exception(
+                sprintf(
+                    'Could not open file %s for reading',
+                    $this->filename
+                ),
+                0
+            );
+        }
     }
 
     /**

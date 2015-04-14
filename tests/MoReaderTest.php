@@ -26,9 +26,7 @@ class MoReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGeneral()
     {
-        $entries = $this->reader->load(BASE_PATH . '/tests/data/general.mo');
-        //print_r($entries);
-        //exit;
+        $entries = $this->reader->load(TEST_DATA_PATH . '/general.mo');
 
         $correctData = array(
             array('', ''),

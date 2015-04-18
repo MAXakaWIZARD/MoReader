@@ -3,3 +3,4 @@ composer.lock
 *.phar
 build
 tests/data/*.po
+phpunit.xml

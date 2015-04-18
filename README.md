@@ -2,9 +2,14 @@
 [![Build Status](https://api.travis-ci.org/MAXakaWIZARD/MoReader.png?branch=master)](https://travis-ci.org/MAXakaWIZARD/MoReader) 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MAXakaWIZARD/MoReader/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MAXakaWIZARD/MoReader/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/MAXakaWIZARD/MoReader/badge.svg?branch=master)](https://coveralls.io/r/MAXakaWIZARD/MoReader?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/maxakawizard/mo-reader/v/stable.svg)](https://packagist.org/packages/maxakawizard/mo-reader) 
-[![Total Downloads](https://poser.pugx.org/maxakawizard/mo-reader/downloads.svg)](https://packagist.org/packages/maxakawizard/mo-reader) 
-[![License](https://poser.pugx.org/maxakawizard/mo-reader/license.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
+[![SensioLabs Insight](https://img.shields.io/sensiolabs/i/0e33f564-fad4-4f89-8078-8c9d0772b0c4.svg)](https://insight.sensiolabs.com/projects/0e33f564-fad4-4f89-8078-8c9d0772b0c4)
+
+[![GitHub tag](https://img.shields.io/github/tag/MAXakaWIZARD/MoReader.svg?label=latest)](https://packagist.org/packages/maxakawizard/mo-reader) 
+[![Packagist](https://img.shields.io/packagist/dt/maxakawizard/mo-reader.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
+[![Packagist](https://img.shields.io/packagist/dm/maxakawizard/mo-reader.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
+
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.3-8892BF.svg)](https://php.net/)
+[![License](https://img.shields.io/packagist/l/maxakawizard/mo-reader.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
 
 Gettext *.mo files reader for PHP.
 

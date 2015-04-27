@@ -27,6 +27,21 @@ class Reader
     protected $littleEndian;
 
     /**
+     * @var integer
+     */
+    protected $stringsCount;
+
+    /**
+     * @var array
+     */
+    protected $msgIdTable;
+
+    /**
+     * @var array
+     */
+    protected $msgStrTable;
+
+    /**
      *
      * @param  string $filename
      * @return array
@@ -36,60 +51,135 @@ class Reader
     {
         $this->openFile($filename);
 
-        $data = array();
-
         $this->determineByteOrder();
         $this->verifyMajorRevision();
 
-        // Gather main information
-        $numStrings                   = $this->readInteger();
-        $originalStringTableOffset    = $this->readInteger();
-        $translationStringTableOffset = $this->readInteger();
+        $this->readStringTables();
 
-        // Usually there follow size and offset of the hash table, but we have
-        // no need for it, so we skip them.
-        fseek($this->file, $originalStringTableOffset);
-        $originalStringTable = $this->readIntegerList(2 * $numStrings);
-
-        fseek($this->file, $translationStringTableOffset);
-        $translationStringTable = $this->readIntegerList(2 * $numStrings);
-
-        // Read in all translations
-        for ($current = 0; $current < $numStrings; $current++) {
-            $sizeKey                 = $current * 2 + 1;
-            $offsetKey               = $current * 2 + 2;
-            $originalStringSize      = $originalStringTable[$sizeKey];
-            $originalStringOffset    = $originalStringTable[$offsetKey];
-            $translationStringSize   = $translationStringTable[$sizeKey];
-            $translationStringOffset = $translationStringTable[$offsetKey];
-
-            $originalString = array('');
-            if ($originalStringSize > 0) {
-                fseek($this->file, $originalStringOffset);
-                $originalString = explode("\0", fread($this->file, $originalStringSize));
-            }
-
-            if ($translationStringSize > 0) {
-                fseek($this->file, $translationStringOffset);
-                $translationString = explode("\0", fread($this->file, $translationStringSize));
-
-                if (count($originalString) > 1 && count($translationString) > 1) {
-                    $data[$originalString[0]] = $translationString;
-
-                    array_shift($originalString);
-
-                    foreach ($originalString as $string) {
-                        $data[$string] = '';
-                    }
-                } else {
-                    $data[$originalString[0]] = $translationString[0];
-                }
-            }
-        }
+        $data = $this->readTranslations();
 
         fclose($this->file);
 
         return $data;
+    }
+
+    /**
+     *
+     */
+    protected function readStringTables()
+    {
+        $this->stringsCount = $this->readInteger();
+        $msgIdTableOffset = $this->readInteger();
+        $msgStrTableOffset = $this->readInteger();
+
+        // Usually there follow size and offset of the hash table, but we have
+        // no need for it, so we skip them.
+        fseek($this->file, $msgIdTableOffset);
+        $this->msgIdTable = $this->readIntegerList(2 * $this->stringsCount);
+
+        fseek($this->file, $msgStrTableOffset);
+        $this->msgStrTable = $this->readIntegerList(2 * $this->stringsCount);
+    }
+
+    /**
+     * @return array
+     */
+    protected function readTranslations()
+    {
+        $data = array();
+
+        for ($counter = 0; $counter < $this->stringsCount; $counter++) {
+            $msgId = $this->readMsgId($counter);
+            $msgStr = $this->readTranslation($counter);
+
+            $this->processRecord($data, $msgId, $msgStr);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $data
+     * @param $msgId
+     * @param $msgStr
+     */
+    protected function processRecord(&$data, $msgId, $msgStr)
+    {
+        if (count($msgId) > 1 && count($msgStr) > 1) {
+            $data[$msgId[0]] = $msgStr;
+
+            array_shift($msgId);
+
+            foreach ($msgId as $string) {
+                $data[$string] = '';
+            }
+        } else {
+            $data[$msgId[0]] = $msgStr[0];
+        }
+    }
+
+    /**
+     * Reads specified message id record
+     *
+     * @param $index
+     *
+     * @return array
+     */
+    protected function readMsgId($index)
+    {
+        $msgId = $this->readStringFromTable($index, $this->msgIdTable);
+        if (false === $msgId) {
+            $msgId = array('');
+        }
+
+        return $msgId;
+    }
+
+    /**
+     * Reads specified translation record
+     *
+     * @param integer $index
+     *
+     * @return array
+     */
+    protected function readTranslation($index)
+    {
+        $msgStr = $this->readStringFromTable($index, $this->msgStrTable);
+        if (false === $msgStr) {
+            $msgStr = array();
+        }
+
+        return $msgStr;
+    }
+
+    /**
+     * @param $index
+     * @param $table
+     *
+     * @return array|bool
+     */
+    protected function readStringFromTable($index, $table)
+    {
+        $sizeKey = $this->calcSizeKey($index);
+        $size = $table[$sizeKey];
+
+        if ($size > 0) {
+            $offset = $table[$sizeKey + 1];
+            fseek($this->file, $offset);
+            return explode("\0", fread($this->file, $size));
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $counter
+     *
+     * @return mixed
+     */
+    protected function calcSizeKey($counter)
+    {
+        return $counter * 2 + 1;
     }
 
     /**
@@ -103,10 +193,10 @@ class Reader
     {
         $this->filename = $filename;
 
-        if (!is_file($this->filename) || !is_readable($this->filename)) {
+        if (!is_file($this->filename)) {
             throw new \Exception(
                 sprintf(
-                    'Could not open file %s for reading',
+                    'File %s does not exist',
                     $this->filename
                 )
             );
@@ -118,8 +208,7 @@ class Reader
                 sprintf(
                     'Could not open file %s for reading',
                     $this->filename
-                ),
-                0
+                )
             );
         }
     }

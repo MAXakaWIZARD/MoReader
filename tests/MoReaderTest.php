@@ -45,4 +45,30 @@ class MoReaderTest extends \PHPUnit_Framework_TestCase
             $idx++;
         }
     }
+
+    /**
+     * Test loading not existing file throws exception
+     */
+    public function testLoadingNotExistingFileThrowsException()
+    {
+        $this->setExpectedException(
+            'Exception',
+            'File foobar does not exist'
+        );
+
+        $this->reader->load('foobar');
+    }
+
+    /**
+     * Test loading an invalid gettext file throws exception
+     */
+    public function testLoadingAnInvalidGettextFileThrowsException()
+    {
+        $this->setExpectedException(
+            'Exception',
+            ' is not a valid gettext file'
+        );
+
+        $this->reader->load(TEST_DATA_PATH . '/invalid.mo');
+    }
 }

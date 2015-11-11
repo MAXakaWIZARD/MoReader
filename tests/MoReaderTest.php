@@ -45,4 +45,16 @@ class MoReaderTest extends \PHPUnit_Framework_TestCase
             $idx++;
         }
     }
+
+    /**
+     * Test loading a file with wrong major revision
+     */
+    public function testLoadingFileWithWrongRevision()
+    {
+        $this->setExpectedException(
+            'Exception',
+            ' has an unknown major revision'
+        );
+        $this->reader->load(TEST_DATA_PATH . '/invalid-major-revision.mo');
+    }
 }

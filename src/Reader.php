@@ -27,7 +27,7 @@ class Reader
     protected $littleEndian;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $stringsCount;
 
@@ -43,7 +43,7 @@ class Reader
 
     /**
      *
-     * @param  string $filename
+     * @param string $filename
      * @return array
      * @throws \Exception
      */
@@ -99,9 +99,9 @@ class Reader
     }
 
     /**
-     * @param $data
-     * @param $msgId
-     * @param $msgStr
+     * @param array $data
+     * @param array $msgId
+     * @param array $msgStr
      */
     protected function processRecord(&$data, $msgId, $msgStr)
     {
@@ -121,7 +121,7 @@ class Reader
     /**
      * Reads specified message id record
      *
-     * @param $index
+     * @param int $index
      *
      * @return array
      */
@@ -138,7 +138,7 @@ class Reader
     /**
      * Reads specified translation record
      *
-     * @param integer $index
+     * @param int $index
      *
      * @return array
      */
@@ -153,8 +153,8 @@ class Reader
     }
 
     /**
-     * @param $index
-     * @param $table
+     * @param int $index
+     * @param array $table
      *
      * @return array|bool
      */
@@ -175,7 +175,7 @@ class Reader
     /**
      * @param $counter
      *
-     * @return mixed
+     * @return int
      */
     protected function calcSizeKey($counter)
     {
@@ -260,7 +260,7 @@ class Reader
     /**
      * Read a single integer from the current file.
      *
-     * @return integer
+     * @return int
      */
     protected function readInteger()
     {
@@ -276,8 +276,8 @@ class Reader
     /**
      * Read an integer from the current file.
      *
-     * @param  integer $num
-     * @return integer
+     * @param int $num
+     * @return array
      */
     protected function readIntegerList($num)
     {

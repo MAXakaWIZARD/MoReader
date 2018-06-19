@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+## 0.4.0 (2018-06-19)
+* Add support PHP 7.1 and 7.2
+
 ## 0.3.1 (2018-06-19)
 * Fix doc blocks
 * Improve test stuff

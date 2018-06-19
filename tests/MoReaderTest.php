@@ -2,11 +2,12 @@
 namespace MoReader\Tests;
 
 use MoReader\Reader;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  */
-class MoReaderTest extends \PHPUnit_Framework_TestCase
+class MoReaderTest extends TestCase
 {
     /**
      * @var Reader

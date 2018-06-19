@@ -3,6 +3,8 @@ CHANGELOG
 
 ## 0.4.0 (2018-06-19)
 * Add support PHP 7.1 and 7.2
+* Drop support of PHP older than 5.6
+* Upgrade to PHPUnit 5.x
 
 ## 0.3.1 (2018-06-19)
 * Fix doc blocks

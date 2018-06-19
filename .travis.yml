@@ -12,8 +12,7 @@ matrix:
         - php: nightly
 
 before_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '7.2' ]]; then composer install -n ; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != '7.2' ]]; then composer install --no-dev -n ; fi
+  - composer install
 
 script:
   - mkdir -p build/logs

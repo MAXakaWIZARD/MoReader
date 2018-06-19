@@ -23,5 +23,10 @@ $parser = new \MoReader\Reader();
 $data = $reader->load('my-file.mo'); //data is an array with entries
 ```
 
+## Running tests
+```bash
+./vendor/bin/phpunit
+```
+
 ## License
 This library is released under [MIT](http://www.tldrlegal.com/license/mit-license) license.

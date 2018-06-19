@@ -9,7 +9,7 @@
 [![Packagist](https://img.shields.io/packagist/dt/maxakawizard/mo-reader.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
 [![Packagist](https://img.shields.io/packagist/dm/maxakawizard/mo-reader.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
 
-[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.3-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](http://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg)](https://php.net/)
 [![License](https://img.shields.io/packagist/l/maxakawizard/mo-reader.svg)](https://packagist.org/packages/maxakawizard/mo-reader)
 
 Gettext *.mo files reader for PHP.
